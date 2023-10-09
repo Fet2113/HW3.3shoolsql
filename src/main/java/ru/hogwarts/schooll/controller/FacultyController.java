@@ -27,7 +27,7 @@ public class FacultyController {
         return facultyService.get(id);
     }
 
-    @PutMapping
+    @PutMapping("{id}")
     public Faculty update(@RequestBody Faculty faculty) {
         return facultyService.update(faculty.getId(), faculty.getName(), faculty.getColor());
     }
