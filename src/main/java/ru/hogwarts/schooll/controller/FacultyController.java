@@ -41,5 +41,4 @@ public class FacultyController {
     public List<Faculty> getByColor(@RequestParam String color) {
         return facultyService.getByColor(color);
     }
-
 }
