@@ -3,7 +3,9 @@ package ru.hogwarts.schooll.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
+import java.util.List;
 import java.util.Objects;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -16,7 +18,11 @@ public class Student {
     private String name;
     private int age;
 
-    public Student (String name, int age) {
+
+    @ManyToOne
+    private Faculty faculty;
+
+    public Student(String name, int age) {
         this.name = name;
         this.age = age;
     }
@@ -46,6 +52,15 @@ public class Student {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 
 

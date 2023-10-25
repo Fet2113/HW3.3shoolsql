@@ -1,9 +1,8 @@
 package ru.hogwarts.schooll.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -15,6 +14,8 @@ public class Faculty {
     private Long id;
     private String name;
     private String color;
+    @OneToMany
+    private List<Student> studentList;
 
     public Faculty(String name, String age) {
         this.name = name;
@@ -47,6 +48,14 @@ public class Faculty {
     public void setColor(String color) {
         this.color = color;
     }
+
+   public List<Student> getStudent() {
+        return studentList;
+   }
+
+   public void setStudent(List<Student> student) {
+       this.studentList = student;
+   }
 
 
     @Override
