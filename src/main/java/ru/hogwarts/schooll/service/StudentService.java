@@ -58,4 +58,16 @@ public class StudentService {
         return studentRepository.findByFacultyId(facultyId);
     }
 
+    public Integer getCount(){
+        return studentRepository.getCount();
+    }
+
+    public Double getAveAge(){
+        return studentRepository.getAvgAge();
+    }
+
+    public List<Student> getLastFive(){
+        return studentRepository.getLastFive();
+    }
+
 }
