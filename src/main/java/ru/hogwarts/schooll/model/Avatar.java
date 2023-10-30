@@ -1,5 +1,6 @@
 package ru.hogwarts.schooll.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
 
@@ -21,6 +22,7 @@ public class Avatar {
 
     private String mediaType;
     @Lob
+    @JsonIgnore
     private byte[] data;
     @OneToOne
     private Student student;

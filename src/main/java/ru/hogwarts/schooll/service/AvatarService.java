@@ -3,6 +3,8 @@ package ru.hogwarts.schooll.service;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +20,7 @@ import ru.hogwarts.schooll.repository.StudentRepository;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
@@ -93,5 +96,10 @@ public class AvatarService {
             response.setContentLength((int) avatar.getFileSize());
             is.transferTo(os);
         }
+    }
+
+    public Page<Avatar> getWithPageable(int page, int count) {
+        return avatarRepository.findAll(PageRequest.of(page, count));
+
     }
 }
