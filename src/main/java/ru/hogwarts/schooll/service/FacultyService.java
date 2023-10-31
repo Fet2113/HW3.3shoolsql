@@ -1,7 +1,8 @@
 package ru.hogwarts.schooll.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.css.Counter;
 import ru.hogwarts.schooll.model.Faculty;
 import ru.hogwarts.schooll.model.Student;
 import ru.hogwarts.schooll.repository.FacultyRepository;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
+    public final Logger logger = LoggerFactory.getLogger(FacultyService.class);
 
     private final FacultyRepository facultyRepository;
     private final StudentService studentService;
@@ -21,16 +23,20 @@ public class FacultyService {
     }
 
     public Faculty add(String name, String color) {
+        logger.info("Был вызван метод add");
         Faculty newFaculty = new Faculty(name, color);
         newFaculty = facultyRepository.save(newFaculty);
         return newFaculty;
     }
 
     public Faculty get(long id) {
+        logger.info("Был вызван метод get");
+
         return facultyRepository.findById(id).get();
     }
 
     public Faculty update(long id, String name, String color) {
+        logger.info("Был вызван метод update");
         Faculty FacultyByUpdate = facultyRepository.findById(id).get();
         FacultyByUpdate.setName(name);
         FacultyByUpdate.setColor(color);
@@ -38,6 +44,7 @@ public class FacultyService {
     }
 
     public Faculty delete(long id) {
+        logger.info("Был вызван метод delete");
         Faculty FacultyByDelete = facultyRepository.findById(id).get();
         facultyRepository.deleteById(id);
         return FacultyByDelete;
@@ -45,6 +52,7 @@ public class FacultyService {
     }
 
     public List<Faculty> getByColor(String color) {
+        logger.info("Был вызван метод getByColor");
         return facultyRepository.findAll().stream()
                 .filter(faculty -> faculty.getColor().equals(color))
                 .collect(Collectors.toList());
@@ -52,6 +60,7 @@ public class FacultyService {
     }
 
     public Set<Faculty> getByColorOrNameIgnoreCase(String param) {
+        logger.info("Был вызван метод getByColorOrNameIgnoreCase");
         Set<Faculty> result = new HashSet<>();
         result.addAll(facultyRepository.findByColorIgnoreCase(param));
         result.addAll(facultyRepository.findByNameIgnoreCase(param));
@@ -59,6 +68,8 @@ public class FacultyService {
     }
 
     public List<Student> getStudentByFacultyId(Long id) {
+        logger.info("Был вызван метод getStudentByFacultyId");
+
         return studentService.getByFacultyId(id);
     }
 
