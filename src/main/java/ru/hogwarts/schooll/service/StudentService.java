@@ -10,6 +10,7 @@ import ru.hogwarts.schooll.repository.StudentRepository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 @Service
@@ -88,6 +89,20 @@ public class StudentService {
         logger.info("Был вызван метод getLastFive");
 
         return studentRepository.getLastFive();
+    }
+    public List<String> getAllWhereNameStartWithA() {
+        String startSimbol = "A";
+        return studentRepository.findAll().stream()
+                .map(student -> student.getName().toUpperCase())
+                .filter(name -> name.startsWith(startSimbol.toUpperCase()))
+                .sorted()
+                .collect(Collectors.toList());
+    }
+    public double getAvgAgeWithStream() {
+        return studentRepository.findAll().stream()
+                .mapToDouble(student -> (double) student.getAge())
+                .average()
+                .orElse(0);
     }
 
 }
