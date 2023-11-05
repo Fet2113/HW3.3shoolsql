@@ -1,16 +1,28 @@
 package ru.hogwarts.schooll.model;
 
+import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.Objects;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
+@Entity
 public class Faculty {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String name;
     private String color;
+    @OneToMany
+    private List<Student> studentList;
 
-    public Faculty(Long id, String name, String age) {
-        this.id = id;
+    public Faculty(String name, String age) {
         this.name = name;
         this.color = age;
+    }
+
+    public Faculty() {
     }
 
     public Long getId() {
@@ -37,6 +49,14 @@ public class Faculty {
         this.color = color;
     }
 
+   public List<Student> getStudent() {
+        return studentList;
+   }
+
+   public void setStudent(List<Student> student) {
+       this.studentList = student;
+   }
+
 
     @Override
     public String toString() {
@@ -58,4 +78,5 @@ public class Faculty {
     public int hashCode() {
         return Objects.hash(getId(), getName(), getColor());
     }
+
 }

@@ -1,52 +1,82 @@
 package ru.hogwarts.schooll.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.css.Counter;
 import ru.hogwarts.schooll.model.Faculty;
+import ru.hogwarts.schooll.model.Student;
+import ru.hogwarts.schooll.repository.FacultyRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
+    public final Logger logger = LoggerFactory.getLogger(FacultyService.class);
 
-    private static long COUNTER = 0;
+    private final FacultyRepository facultyRepository;
+    private final StudentService studentService;
 
-    private final Map<Long, Faculty> facultyById = new HashMap<>();
+    public FacultyService(FacultyRepository facultyRepository, StudentService studentService) {
+        this.facultyRepository = facultyRepository;
+        this.studentService = studentService;
+    }
 
     public Faculty add(String name, String color) {
-        Faculty newFaculty = new Faculty(++COUNTER, name, color);
-        facultyById.put(newFaculty.getId(), newFaculty);
+        logger.info("Был вызван метод add");
+        Faculty newFaculty = new Faculty(name, color);
+        newFaculty = facultyRepository.save(newFaculty);
         return newFaculty;
     }
 
     public Faculty get(long id) {
-        return facultyById.get(id);
+        logger.info("Был вызван метод get");
+
+        return facultyRepository.findById(id).get();
     }
 
     public Faculty update(long id, String name, String color) {
-        Faculty FacultyByUpdate = facultyById.get(id);
+        logger.info("Был вызван метод update");
+        Faculty FacultyByUpdate = facultyRepository.findById(id).get();
         FacultyByUpdate.setName(name);
         FacultyByUpdate.setColor(color);
-        return FacultyByUpdate;
+        return facultyRepository.save(FacultyByUpdate);
     }
 
     public Faculty delete(long id) {
-        Faculty FacultyByDelete = facultyById.get(id);
-        facultyById.remove(id);
+        logger.info("Был вызван метод delete");
+        Faculty FacultyByDelete = facultyRepository.findById(id).get();
+        facultyRepository.deleteById(id);
         return FacultyByDelete;
 
     }
 
     public List<Faculty> getByColor(String color) {
-        return facultyById.values().stream()
+        logger.info("Был вызван метод getByColor");
+        return facultyRepository.findAll().stream()
                 .filter(faculty -> faculty.getColor().equals(color))
                 .collect(Collectors.toList());
 
-
     }
 
+    public Set<Faculty> getByColorOrNameIgnoreCase(String param) {
+        logger.info("Был вызван метод getByColorOrNameIgnoreCase");
+        Set<Faculty> result = new HashSet<>();
+        result.addAll(facultyRepository.findByColorIgnoreCase(param));
+        result.addAll(facultyRepository.findByNameIgnoreCase(param));
+        return result;
+    }
+
+    public List<Student> getStudentByFacultyId(Long id) {
+        logger.info("Был вызван метод getStudentByFacultyId");
+
+        return studentService.getByFacultyId(id);
+    }
+    public String getLongestName() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max((name1, name2) -> name1.length() - name2.length())
+                .get();
+    }
 
 }
