@@ -2,4 +2,5 @@
 // Вывести максимальную зарплату (salary) по каждому отделу, имеющему больше одного сотрудника.
 //и среднюю зарплату (salary) по каждому отделу, имеющему больше одного сотрудника.
 select avg(salary), max(salary) from employee
-group by department having count(*) > 1;
+group by department having count(*) >1 ;
+
